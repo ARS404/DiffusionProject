@@ -49,7 +49,6 @@ class Tester(object):
     def save_samples(self) -> None:
         result_path = self.__get_result_path()
         count = 0
-        assert self.num_samples % 10 == 0
 
         with tqdm(total= self.num_samples) as pbar:
             while count < self.num_samples:
@@ -65,6 +64,7 @@ class Tester(object):
                     count += 1
                     pbar.update(1)
                     pbar.set_description('%d images saved' % (count,))
+                torch.cuda.empty_cache()
 
     def __get_result_path(self):
         assert self.solver is not None, "Set solver!"
