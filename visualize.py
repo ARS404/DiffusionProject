@@ -34,7 +34,7 @@ def visualize(config: DictConfig) -> None:
 
 def visualize_model_samples(model, solver, num_steps, 
                             title, nrows, ncol, out_root):
-    noise = torch.randn(nrows * ncols, 3, 32, 32).cuda()
+    noise = torch.randn(nrows * ncol, 3, 32, 32).cuda()
     out = solver(model, noise, num_steps)
     out = out * 0.5 + 0.5
     visualize_batch(
