@@ -10,7 +10,7 @@ from abc import abstractmethod
 
 from tqdm import tqdm
 
-from base import BaseMetric
+from .base import BaseMetric
 from models.edm.training import dataset
 
 class FID(BaseMetric):

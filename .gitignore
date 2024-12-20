@@ -1,2 +1,4 @@
 data/**
 models/edm**
+**/__pycache__/
+outputs/**

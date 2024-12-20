@@ -1,2 +1,1 @@
-defaults:
-  - _target_: models.solvers.euler.Euler
+_target_: models.solvers.euler.EulerSolver

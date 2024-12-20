@@ -1,0 +1,7 @@
+data_config:
+  data_root: "data"
+  out_root: "outputs"
+  dataset: "CIFAR10"
+
+num_samples: 3000
+batch_size: 128

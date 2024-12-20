@@ -1,2 +1,2 @@
-from tester import Tester
-from logger import Logger
+from .tester import Tester
+from .logger import Logger

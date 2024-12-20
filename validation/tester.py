@@ -7,7 +7,7 @@ from hydra.utils import instantiate
 from PIL import Image
 from tqdm import tqdm
 
-from metrics.fid import FID
+from .metrics.fid import FID
 
 
 class Tester(object):
