@@ -8,10 +8,11 @@
 
 
 ## Description
+This repository contains source code of the project and report (in report folder).
 
 
 ### Source code structure
-```bash
+```
   DiffusionProject
     |-configs       (root of hydra config files)
     |-models

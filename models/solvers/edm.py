@@ -17,13 +17,14 @@ class EDMSolver(BaseSolver):
         sigma_min = max(self.sigma_min, net.sigma_min)
         sigma_max = min(self.sigma_max, net.sigma_max)
 
-        step_indices = torch.arange(num_steps, dtype=torch.float64, device=noise.device)
-        t_steps = (sigma_max ** (1 / self.rho) + step_indices / (num_steps - 1) * 
-                   (sigma_min ** (1 / self.rho) - sigma_max ** (1 / self.rho))) ** self.rho
-        t_steps = torch.cat([net.round_sigma(t_steps), torch.zeros_like(t_steps[:1])]) # t_N = 0
+        t_steps = self.get_timesteps(
+            sigma_min=sigma_min,
+            sigma_max=sigma_max,
+            rho=self.rho
+        )
         x_next = noise.to(torch.float64) * t_steps[0]
 
-        for i, (t_cur, t_next) in enumerate(zip(t_steps[:-1], t_steps[1:])): # 0, ..., N-1
+        for i, (t_cur, t_next) in enumerate(zip(t_steps[:-1], t_steps[1:])):
             x_cur = x_next
 
             t_hat = net.round_sigma(t_cur * t_cur)
