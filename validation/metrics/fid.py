@@ -26,9 +26,8 @@ class FID(BaseMetric):
         fid = self.calculate_fid_from_inception_stats(mu, sigma, ref['mu'], ref['sigma'])
         return fid
     
-    @abstractmethod
     def calculate_inception_stats(
-        image_path, num_expected=None, seed=0, max_batch_size=64,
+        self, image_path, num_expected=None, seed=0, max_batch_size=64,
         num_workers=3, prefetch_factor=2, device=torch.device('cuda')
     ):
         print('Loading Inception-v3 model...')
@@ -71,8 +70,7 @@ class FID(BaseMetric):
         sigma /= len(dataset_obj) - 1
         return mu.cpu().numpy(), sigma.cpu().numpy()
 
-    @abstractmethod
-    def calculate_fid_from_inception_stats(mu, sigma, mu_ref, sigma_ref):
+    def calculate_fid_from_inception_stats(self, mu, sigma, mu_ref, sigma_ref):
         m = np.square(mu - mu_ref).sum()
         s, _ = scipy.linalg.sqrtm(np.dot(sigma, sigma_ref), disp=False)
         fid = m + np.trace(sigma + sigma_ref - s * 2)
