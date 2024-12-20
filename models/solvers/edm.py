@@ -15,12 +15,10 @@ class EDMSolver(BaseSolver):
                  labels=None, S_churn=80, S_min=0.05, S_max=1.0, 
                  S_noise=1.007):
         
-        sigma_min = max(self.sigma_min, net.sigma_min)
-        sigma_max = min(self.sigma_max, net.sigma_max)
-
         t_steps = self.get_timesteps(
-            sigma_min=sigma_min,
-            sigma_max=sigma_max,
+            sigma_min=self.sigma_min,
+            sigma_max=self.sigma_max,
+            num_steps=num_steps,
             rho=self.rho
         )
         x = noise * self.sigma_max
