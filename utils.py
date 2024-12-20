@@ -1,6 +1,6 @@
 import pickle
 
-import dnnlib
+import .models.edm.dnnlib
 import torch
 
 
