@@ -31,9 +31,21 @@ class Tester(object):
     def run_test(self):
         result_path = self.__get_result_path()
         if os.path.exists(result_path):
-            shutil.rmtree(result_path) # перед сохранением изображений в папку папка очищается
-        os.makedirs(result_path, exist_ok=True) # и пересоздается
+            shutil.rmtree(result_path)
+        os.makedirs(result_path, exist_ok=True)
         
+        self.save_samples()
+        if self.dataset_name == "CIFAR10":
+            return self.fid(
+                result_path, 
+                'https://nvlabs-fi-cdn.nvidia.com/edm/fid-refs/cifar10-32x32.npz', 
+                self.num_samples,
+                self.batch_size
+            )
+        raise Exception(f"Unexpected dataset {self.dataset_name}")
+
+    def save_samples(self) -> None:
+        result_path = self.__get_result_path()
         count = 0
         assert self.num_samples % 10 == 0
 

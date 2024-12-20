@@ -14,13 +14,13 @@ from base import BaseMetric
 from models.edm.training import dataset
 
 class FID(BaseMetric):
-    def __call__(self, generated_path, ref_path, mun_samples, batch):
+    def __call__(self, generated_path, ref_path, num_samples, batch):
         with dnnlib.util.open_url(ref_path) as f:
             ref = dict(np.load(f))
 
         mu, sigma = self.calculate_inception_stats(
             image_path=generated_path, 
-            num_expected=mun_samples, 
+            num_expected=num_samples, 
             max_batch_size=batch
         )
         fid = self.calculate_fid_from_inception_stats(mu, sigma, ref['mu'], ref['sigma'])

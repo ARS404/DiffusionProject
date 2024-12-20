@@ -11,7 +11,8 @@ def main(config: OmegaConf) -> None:
     tester = Tester(config.exp_config)
     for solver_config in config.solvers:
         tester.set_solver(solver_config)
-        tester.run_test()
+        fid = tester.run_test()
+        print(f"Solver: {tester.solver.get_name()} \t FID: {fid}")
 
 
 if __name__ == "__main__":
