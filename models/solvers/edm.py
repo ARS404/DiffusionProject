@@ -23,7 +23,7 @@ class EDMSolver(BaseSolver):
             sigma_max=sigma_max,
             rho=self.rho
         )
-        x_next = noise.to(torch.float64) * t_steps[0]
+        x = noise * self.sigma_max
 
         for i in range(len(t_steps) - 1):
             t_cur = t_steps[i]
