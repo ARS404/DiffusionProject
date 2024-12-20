@@ -4,12 +4,11 @@ from .base import BaseSolver
 
 
 class DPMSolver(BaseSolver):
-    def __init__(self, t_start, t_end, order, skip_type):
+    def __init__(self, t_start, t_end, skip_type):
         super().__init__()
         self.t_start = t_start
         self.t_end = t_end
 
-        self.order = order
         self.skip_type = skip_type
 
     def __call__(self, net, noise, num_steps, labels=None, device='cuda'):
@@ -19,8 +18,6 @@ class DPMSolver(BaseSolver):
         t = timesteps[step]
         t_prev_list = [t]
         model_prev_list = [self.model_fn(x, t)]
-        if self.correcting_xt_fn is not None:
-            x = self.correcting_xt_fn(x, t, step)
         # Init the first `order` values by lower order multistep DPM-Solver.
         for step in range(1, self.order):
             t = timesteps[step]
@@ -35,8 +32,6 @@ class DPMSolver(BaseSolver):
             # We only use lower order for steps < 10
             step_order = self.order
             x = self.multistep_dpm_solver_update(x, model_prev_list, t_prev_list, t, step_order)
-            if self.correcting_xt_fn is not None:
-                x = self.correcting_xt_fn(x, t, step)
             for i in range(self.order - 1):
                 t_prev_list[i] = t_prev_list[i + 1]
                 model_prev_list[i] = model_prev_list[i + 1]
@@ -52,7 +47,6 @@ class DPMSolver(BaseSolver):
             return self.dpm_solver_first_update(x, t_prev_list[-1], t, model_s=model_prev_list[-1])
         elif order == 2:
             return self.multistep_dpm_solver_second_update(x, model_prev_list, t_prev_list, t)
-        return self.multistep_dpm_solver_third_update(x, model_prev_list, t_prev_list, t)
 
     def get_time_steps(self, t_T, t_0, N, device):
         if self.skip_type == 'logSNR':
@@ -122,33 +116,5 @@ class DPMSolver(BaseSolver):
         )
         return x_t
 
-    def multistep_dpm_solver_third_update(self, x, model_prev_list, t_prev_list, t):
-        ns = self.noise_schedule
-        model_prev_2, model_prev_1, model_prev_0 = model_prev_list
-        t_prev_2, t_prev_1, t_prev_0 = t_prev_list
-        lambda_prev_2, lambda_prev_1, lambda_prev_0, lambda_t = ns.marginal_lambda(t_prev_2), ns.marginal_lambda(t_prev_1), ns.marginal_lambda(t_prev_0), ns.marginal_lambda(t)
-        log_alpha_prev_0, log_alpha_t = ns.marginal_log_mean_coeff(t_prev_0), ns.marginal_log_mean_coeff(t)
-        sigma_prev_0, sigma_t = ns.marginal_std(t_prev_0), ns.marginal_std(t)
-        alpha_t = torch.exp(log_alpha_t)
-
-        h_1 = lambda_prev_1 - lambda_prev_2
-        h_0 = lambda_prev_0 - lambda_prev_1
-        h = lambda_t - lambda_prev_0
-        r0, r1 = h_0 / h, h_1 / h
-        D1_0 = (1. / r0) * (model_prev_0 - model_prev_1)
-        D1_1 = (1. / r1) * (model_prev_1 - model_prev_2)
-        D1 = D1_0 + (r0 / (r0 + r1)) * (D1_0 - D1_1)
-        D2 = (1. / (r0 + r1)) * (D1_0 - D1_1)
-        phi_1 = torch.expm1(-h)
-        phi_2 = phi_1 / h + 1.
-        phi_3 = phi_2 / h - 0.5
-        x_t = (
-            (sigma_t / sigma_prev_0) * x
-            - (alpha_t * phi_1) * model_prev_0
-            + (alpha_t * phi_2) * D1
-            - (alpha_t * phi_3) * D2
-        )
-        return x_t
-
     def get_name(self):
-        return f"DPM_ord{self.order}"
+        return f"DPM"
