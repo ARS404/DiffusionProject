@@ -1,0 +1,6 @@
+defaults:
+  - nrow: 1
+  - ycol: 1
+  - out_root: "outputs"
+  - num_steps: 256
+  - solvers: euler
