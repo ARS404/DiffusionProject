@@ -12,7 +12,7 @@ class EulerSolver(BaseSolver):
             sigma_max=80.0, num_steps=20, device='cuda', 
             rho=7.0, stochastic=False, vis_steps=5
     ):
-        t_steps = self.get_timesteps(sigma_min, sigma_max, num_steps, device, rho) # t_steps[0] = 80.0, t_steps[-2] = 0.02, t_steps[-1] = 0.0
+        t_steps = BaseSolver.get_timesteps(sigma_min, sigma_max, num_steps, device, rho) # t_steps[0] = 80.0, t_steps[-2] = 0.02, t_steps[-1] = 0.0
         x = noise * sigma_max # стартуем с N(0, sigma^2_T)
         x_history = [self.normalize(noise)] # история для визуализации
         with torch.no_grad():
