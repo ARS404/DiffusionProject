@@ -1,7 +1,8 @@
 import pickle
 
-import .models.edm.dnnlib
 import torch
+
+from .models.edm import dnnlib
 
 
 def init_edm():

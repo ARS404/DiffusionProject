@@ -1,7 +1,6 @@
 import pickle
 
 import click
-import dnnlib
 import numpy as np
 import scipy
 import torch
@@ -11,6 +10,7 @@ from abc import abstractmethod
 from tqdm import tqdm
 
 from .base import BaseMetric
+from models.edm import dnnlib
 from models.edm.training import dataset
 
 class FID(BaseMetric):
