@@ -53,7 +53,7 @@ class Tester(object):
             while count < self.num_samples:
                 cur_batch_size = min(self.num_samples - count, self.batch_size)
                 noise = torch.randn(cur_batch_size, 3, 32, 32, device='cuda')
-                out, trajectory = self.solver(self.model, noise, self.solver_config)
+                out, trajectory = self.solver(self.model, noise)
                 out = (out * 127.5 + 128).clip(0, 255).to(torch.uint8).permute(0, 2, 3, 1).cpu().numpy()
                 for i in range(out.shape[0]):
                     img = Image.fromarray(out[i])
