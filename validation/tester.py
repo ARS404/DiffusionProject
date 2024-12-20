@@ -18,7 +18,8 @@ class Tester(object):
         self.dataset_name = config.data_config.dataset
 
         self.num_samples = config.num_samples
-        self.batch_size = 128
+        self.batch_size = config.batch_size
+        self.num_steps = config.num_steps
 
         self.model = init_edm()
         self.solver = None
@@ -54,7 +55,7 @@ class Tester(object):
             while count < self.num_samples:
                 cur_batch_size = min(self.num_samples - count, self.batch_size)
                 noise = torch.randn(cur_batch_size, 3, 32, 32, device='cuda')
-                out, trajectory = self.solver(self.model, noise)
+                out, trajectory = self.solver(self.model, noise, num_steps=self.num_steps)
                 out = (out * 127.5 + 128).clip(0, 255).to(torch.uint8).permute(0, 2, 3, 1).cpu().numpy()
                 for i in range(out.shape[0]):
                     img = Image.fromarray(out[i])

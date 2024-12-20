@@ -3,5 +3,6 @@ data_config:
   out_root: "outputs"
   dataset: "CIFAR10"
 
+num_steps: 256
 num_samples: 3000
 batch_size: 128
