@@ -8,7 +8,7 @@ class EulerSolver(BaseSolver):
         super().__init__()        
 
     def __call__(
-            self, noise, net, labels=None, sigma_min=0.02, 
+            self, net, noise, labels=None, sigma_min=0.02, 
             sigma_max=80.0, num_steps=20, device='cuda', 
             rho=7.0, stochastic=False, vis_steps=5
     ):
