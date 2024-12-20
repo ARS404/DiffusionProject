@@ -1,9 +1,8 @@
-from base import BaseSolver
+from .base import BaseSolver
 
 class EulerSolver(BaseSolver):
-    def __init__(self, config):
+    def __init__(self):
         super().__init__()
-        self.config = config
 
     def __call__(self, *args, **kwds):
         pass
