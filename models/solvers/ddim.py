@@ -24,11 +24,9 @@ class DDIMSolver(BaseSolver):
                 x = alpha_prev.sqrt() * x0_hat + (1 - alpha_prev).sqrt() * eps_hat
         return x
 
-    def get_betas(num_steps=20):
-        beta_start = 0.0001
-        beta_end = 0.02
+    def get_betas(self, num_steps=20):
         betas = (
-            torch.linspace(beta_start**0.5, beta_end**0.5, num_steps) ** 2
+            torch.linspace(self.beta_start**0.5, self.beta_end**0.5, num_steps) ** 2
         )
         return betas.numpy()
 
