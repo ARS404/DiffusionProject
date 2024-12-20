@@ -12,7 +12,7 @@ class EDMSolver(BaseSolver):
         self.rho = rho
 
     def __call__(self, 
-                 net, latents, num_steps, class_labels=None, randn_like=torch.randn_like,
+                 net, latents, num_steps=20, class_labels=None, randn_like=torch.randn_like,
                  S_churn=0, S_min=0, S_max=float('inf'), S_noise=1):
         
         sigma_min = max(self.sigma_min, net.sigma_min)
