@@ -2,3 +2,9 @@ data/**
 models/edm**
 **/__pycache__/
 outputs/**
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.toc
+*.gz

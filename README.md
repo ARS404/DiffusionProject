@@ -19,6 +19,10 @@ Clone EDM repo into `models` folder
 ```bash
     cd models & git clone git@github.com:NVlabs/edm.git
 ```
+To run code:
+```bash
+  PYTHONPATH="$PYTHONPATH:models/edm" python3 run_tests.py
+```
 
 
 ## TODO
