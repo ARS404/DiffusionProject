@@ -51,22 +51,33 @@
     \subsection{Описание результатов}
     Было проведено несколько экспериментов, с различным количеством шагов солверов:
     \begin{table}
+        \centering
         \begin{tabular}{ l | c | c | c | c }
             \textbf{Solver} & Euler & DDIM  & EDM   & DPM \\ \hline
             \textbf{FID}    & 11{,}55 & 354{,}51     & 10{,}21   & -
         \end{tabular}\hspace{50pt}%
         \begin{tabular}{ l | c | c | c | c }
             \textbf{Solver} & Euler & DDIM  & EDM   & DPM \\ \hline
-            \textbf{FID}    & 10{,}96     & -     &   -   & -
+            \textbf{FID}    & 10{,}96 & 152{,}53 & 10{,}25 & -
         \end{tabular}
-        \caption{Для 50 (слева) и 100 (справа) степов}
+        \caption{Для 50 (слева) и 200 (справа) степов и 3000 семплов}
     \end{table}
+    \begin{table}
+        \centering
+        \begin{tabular}{ l | c | c | c | c }
+            \textbf{Solver} & Euler & DDIM  & EDM   & DPM \\ \hline
+            \textbf{FID}    & 7{,}59 & 321{,}57 & -   & -
+        \end{tabular}
+        \caption{Для 100 степов и 5000 семплов}
+    \end{table}
+    DDIM + 500 steps + 3000 samples = 18{,}61
 
     \subsection{Анализ результатов}
     
     имеет смысл написать про скорость методов (пока от самого быстрого к медленному:
     Euler --- EDM)
 
+    Также стоит написать про количество обращений к модели.
 
     \section{Разделение работы}
     \begin{itemize}
