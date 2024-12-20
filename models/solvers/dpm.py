@@ -63,7 +63,6 @@ class DPMSolver(BaseSolver):
 
     def dpm_solver_first_update(self, x, s, t, model_s=None, return_intermediate=False):
         ns = self.noise_schedule
-        dims = x.dim()
         lambda_s, lambda_t = ns.marginal_lambda(s), ns.marginal_lambda(t)
         h = lambda_t - lambda_s
         log_alpha_s, log_alpha_t = ns.marginal_log_mean_coeff(s), ns.marginal_log_mean_coeff(t)

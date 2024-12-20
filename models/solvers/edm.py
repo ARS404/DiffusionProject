@@ -12,8 +12,8 @@ class EDMSolver(BaseSolver):
         self.rho = rho
 
     def __call__(self, net, noise, num_steps, device='cuda', 
-                 labels=None, randn_like=torch.randn_like,
-                 S_churn=80, S_min=0.05, S_max=1.0, S_noise=1.007):
+                 labels=None, S_churn=80, S_min=0.05, S_max=1.0, 
+                 S_noise=1.007):
         
         sigma_min = max(self.sigma_min, net.sigma_min)
         sigma_max = min(self.sigma_max, net.sigma_max)
