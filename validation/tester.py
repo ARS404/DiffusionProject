@@ -50,21 +50,22 @@ class Tester(object):
         result_path = self.__get_result_path()
         count = 0
 
-        with tqdm(total= self.num_samples) as pbar:
-            while count < self.num_samples:
-                cur_batch_size = min(self.num_samples - count, self.batch_size)
-                noise = torch.randn(cur_batch_size, 3, 32, 32, device='cuda')
-                out = self.solver(self.model, noise, num_steps=self.num_steps)
-                out = (out * 127.5 + 128).clip(0, 255).to(torch.uint8).permute(0, 2, 3, 1).cpu().numpy()
-                for i in range(out.shape[0]):
-                    img = Image.fromarray(out[i])
-                    n_digits = len(str(count))
-                    img_name = (6 - n_digits) * '0' + str(count) + '.png'
-                    img.save(os.path.join(result_path, img_name))
-                    count += 1
-                    pbar.update(1)
-                    pbar.set_description('%d images saved' % (count,))
-                torch.cuda.empty_cache()
+        with torch.no_grad():
+            with tqdm(total= self.num_samples) as pbar:
+                while count < self.num_samples:
+                    cur_batch_size = min(self.num_samples - count, self.batch_size)
+                    noise = torch.randn(cur_batch_size, 3, 32, 32, device='cuda')
+                    out = self.solver(self.model, noise, num_steps=self.num_steps)
+                    out = (out * 127.5 + 128).clip(0, 255).to(torch.uint8).permute(0, 2, 3, 1).cpu().numpy()
+                    for i in range(out.shape[0]):
+                        img = Image.fromarray(out[i])
+                        n_digits = len(str(count))
+                        img_name = (6 - n_digits) * '0' + str(count) + '.png'
+                        img.save(os.path.join(result_path, img_name))
+                        count += 1
+                        pbar.update(1)
+                        pbar.set_description('%d images saved' % (count,))
+                    torch.cuda.empty_cache()
 
     def __get_result_path(self):
         assert self.solver is not None, "Set solver!"

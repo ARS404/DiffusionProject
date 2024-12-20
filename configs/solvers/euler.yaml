@@ -1,2 +1,6 @@
 _target_: models.solvers.euler.EulerSolver
+
 n_channels: 3
+sigma_min: 0.02
+sigma_max: 80
+rho: 7

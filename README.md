@@ -35,10 +35,12 @@ Clone EDM repo into `models` folder
 ```
 To run code:
 ```bash
-    PYTHONPATH="$PYTHONPATH:models/edm" python3 run_tests.py
+    PYTHONPATH="$PYTHONPATH:models/edm" python3 run_tests.py [solvers=[euler|edm|dpm|ddim]] [exp_config.num_steps=<num_steps>]
 ```
+Also you can edit any other configuration parameter (check configs).
 
 
 ## TODO
- - fill readme
+ - Fill readme
  - Add solvers
+ - Finish report

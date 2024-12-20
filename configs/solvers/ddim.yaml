@@ -1,0 +1,4 @@
+_target_: models.solvers.ddim.DDIMSolver
+
+beta_start: 0.0001
+beta_end: 0.02

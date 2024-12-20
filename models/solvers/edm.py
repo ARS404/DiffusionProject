@@ -11,17 +11,17 @@ class EDMSolver(BaseSolver):
         self.sigma_max = sigma_max
         self.rho = rho
 
-    def __call__(self, net, latents, num_steps=20, 
+    def __call__(self, net, noise, num_steps, 
                  class_labels=None, randn_like=torch.randn_like):
         
         sigma_min = max(self.sigma_min, net.sigma_min)
         sigma_max = min(self.sigma_max, net.sigma_max)
 
-        step_indices = torch.arange(num_steps, dtype=torch.float64, device=latents.device)
+        step_indices = torch.arange(num_steps, dtype=torch.float64, device=noise.device)
         t_steps = (sigma_max ** (1 / self.rho) + step_indices / (num_steps - 1) * 
                    (sigma_min ** (1 / self.rho) - sigma_max ** (1 / self.rho))) ** self.rho
         t_steps = torch.cat([net.round_sigma(t_steps), torch.zeros_like(t_steps[:1])]) # t_N = 0
-        x_next = latents.to(torch.float64) * t_steps[0]
+        x_next = noise.to(torch.float64) * t_steps[0]
 
         for i, (t_cur, t_next) in enumerate(zip(t_steps[:-1], t_steps[1:])): # 0, ..., N-1
             x_cur = x_next
