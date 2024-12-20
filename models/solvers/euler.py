@@ -4,8 +4,9 @@ from .base import BaseSolver
 
 
 class EulerSolver(BaseSolver):
-    def __init__(self, net=None):
+    def __init__(self, n_channels=3):
         super().__init__()        
+        self.n_channels = n_channels
 
     def __call__(
             self, net, noise, labels=None, sigma_min=0.02, 

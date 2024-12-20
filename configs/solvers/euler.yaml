@@ -1,1 +1,2 @@
 _target_: models.solvers.euler.EulerSolver
+n_channels: 3
