@@ -69,4 +69,4 @@ class Tester(object):
 
     def __get_result_path(self):
         assert self.solver is not None, "Set solver!"
-        return os.path.join(self.out_root, self.solver.get_name(), self.dataset_name, self.num_samples)
+        return os.path.join(self.out_root, self.solver.get_name(), self.dataset_name, str(self.num_samples))
