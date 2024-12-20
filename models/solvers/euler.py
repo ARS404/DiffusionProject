@@ -19,12 +19,14 @@ class EulerSolver(BaseSolver):
             num_steps, device, self.rho
         )
         x = noise * self.sigma_max
-        for i in range(len(t_steps) - 1):
-            t_cur = t_steps[i]
-            t_next = t_steps[i + 1]
-            t_net = t_steps[i] * torch.ones(x.shape[0], device=device)
-            delta_t = (t_next - t_cur).abs()
-            x = x + self.velocity_from_denoiser(x, net, t_net, class_labels=labels) * delta_t
+
+        with torch.no_grad():
+            for i in range(len(t_steps) - 1):
+                t_cur = t_steps[i]
+                t_next = t_steps[i + 1]
+                t_net = t_steps[i] * torch.ones(x.shape[0], device=device)
+                delta_t = (t_next - t_cur).abs()
+                x = x + self.velocity_from_denoiser(x, net, t_net, class_labels=labels) * delta_t
         return x
         
 
