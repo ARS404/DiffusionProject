@@ -31,4 +31,4 @@ class DDIMSolver(BaseSolver):
         return betas.numpy()
 
     def get_name(self):
-        return "DDM"
+        return "DDIM"
