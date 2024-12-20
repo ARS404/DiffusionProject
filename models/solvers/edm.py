@@ -11,9 +11,8 @@ class EDMSolver(BaseSolver):
         self.sigma_max = sigma_max
         self.rho = rho
 
-    def __call__(self, 
-                 net, latents, num_steps=20, class_labels=None, randn_like=torch.randn_like,
-                 S_churn=0, S_min=0, S_max=float('inf'), S_noise=1):
+    def __call__(self, net, latents, num_steps=20, 
+                 class_labels=None, randn_like=torch.randn_like):
         
         sigma_min = max(self.sigma_min, net.sigma_min)
         sigma_max = min(self.sigma_max, net.sigma_max)
@@ -27,17 +26,13 @@ class EDMSolver(BaseSolver):
         for i, (t_cur, t_next) in enumerate(zip(t_steps[:-1], t_steps[1:])): # 0, ..., N-1
             x_cur = x_next
 
-            # Increase noise temporarily.
-            gamma = min(S_churn / num_steps, np.sqrt(2) - 1) if S_min <= t_cur <= S_max else 0
-            t_hat = net.round_sigma(t_cur + gamma * t_cur)
-            x_hat = x_cur + (t_hat ** 2 - t_cur ** 2).sqrt() * S_noise * randn_like(x_cur)
+            t_hat = net.round_sigma(t_cur * t_cur)
+            x_hat = x_cur + (t_hat ** 2 - t_cur ** 2).sqrt() * randn_like(x_cur)
 
-            # Euler step.
             denoised = net(x_hat, t_hat, class_labels).to(torch.float64)
             d_cur = (x_hat - denoised) / t_hat
             x_next = x_hat + (t_next - t_hat) * d_cur
 
-            # Apply 2nd order correction.
             if i < num_steps - 1:
                 denoised = net(x_next, t_next, class_labels).to(torch.float64)
                 d_prime = (x_next - denoised) / t_next

@@ -11,6 +11,20 @@
 
 
 ### Source code structure
+```bash
+  DiffusionProject
+    |-configs       (root of hydra config files)
+    |-models
+    | |-emd         (to be downloaded)
+    | |-solvers     (root of solver files)
+    |-outputs       (root of all generated images)
+    |-report
+    | |-data        (root of all images in report)
+    | |-report.pdf  (pdf report file)
+    | |-report.tex  (tex report sources)
+    |-run_rests.py  (main entry point)
+    |-utils.py      (util functions)
+```
 
 
 
@@ -21,12 +35,10 @@ Clone EDM repo into `models` folder
 ```
 To run code:
 ```bash
-  PYTHONPATH="$PYTHONPATH:models/edm" python3 run_tests.py
+    PYTHONPATH="$PYTHONPATH:models/edm" python3 run_tests.py
 ```
 
 
 ## TODO
  - fill readme
- - is it ok, that we can ran only with CUDA?
- - Add `analysis.ipnb'
  - Add solvers
