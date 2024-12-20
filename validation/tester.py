@@ -8,6 +8,7 @@ from PIL import Image
 from tqdm import tqdm
 
 from .metrics.fid import FID
+from utils import init_edm
 
 
 class Tester(object):
@@ -19,7 +20,7 @@ class Tester(object):
         self.num_samples = config.num_samples
         self.batch_size = 128
 
-        self.model = None
+        self.model = init_edm()
         self.solver = None
         self.fid = FID()
 
