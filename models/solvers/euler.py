@@ -15,7 +15,6 @@ class EulerSolver(BaseSolver):
     ):
         t_steps = self.get_timesteps(sigma_min, sigma_max, num_steps, device, rho) # t_steps[0] = 80.0, t_steps[-2] = 0.02, t_steps[-1] = 0.0
         x = noise * sigma_max # стартуем с N(0, sigma^2_T)
-        x_history = [self.normalize(noise)] # история для визуализации
         with torch.no_grad():
             for i in range(len(t_steps) - 1):
                 t_cur = t_steps[i]
@@ -25,12 +24,7 @@ class EulerSolver(BaseSolver):
                 x = x + self.velocity_from_denoiser(x, net, t_net, class_labels=labels, stochastic=stochastic) * delta_t
                 if stochastic:
                     x = x + torch.sqrt(2 * delta_t * t_cur) * torch.randn_like(x)
-
-                x_history.append(self.normalize(x).view(-1, self.n_channels, *x.shape[2:]))
-
-        # добавляем начало, конец, и выкидываем часть траектории
-        x_history = [x_history[0]] + x_history[::-(num_steps // (vis_steps - 2))][::-1] + [x_history[-1]]
-        return x, x_history
+        return x
         
 
     def get_name(self):
