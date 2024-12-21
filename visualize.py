@@ -53,8 +53,8 @@ def visualize_batch(img_vis, title, nrow, ncol, out_root):
     remove_ticks(ax)
     ax.set_title(title, fontsize=14)
     ax.imshow(img_grid.permute(1, 2, 0))
-    plt.show()
     plt.savefig(f"{os.path.join(out_root, title.replace(' ', '_'))}.pdf")
+    plt.show()
 
 
 def remove_ticks(ax):
