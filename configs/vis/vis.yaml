@@ -1,0 +1,4 @@
+nrow: 1
+ncol: 1
+out_root: "outputs"
+num_steps: 256

@@ -15,6 +15,7 @@ from utils import *
 @hydra.main(version_base=None, config_path="./configs", config_name="visualize")
 def visualize(config: DictConfig) -> None:
     solver = instantiate(config["solvers"])
+    config = config["vis"]
     nrow = config["nrow"]
     ncol = config["ncol"]
     num_steps = config["num_steps"]
